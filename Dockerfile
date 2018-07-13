@@ -8,5 +8,5 @@ WORKDIR /workspace
 COPY . .
 
 VOLUME [ "/var/run/docker.sock" ]
-ENTRYPOINT [ "build.sh" ]
+ENTRYPOINT [ "./build.sh" ]
 
