@@ -1,4 +1,4 @@
-OUT := build-builder
+OUT := build-and-run
 VERSION := $(shell git describe --always --dirty)
 DOCKER_TAG := aaronnbrock/$(OUT)
 
