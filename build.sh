@@ -9,6 +9,7 @@ Options:
   -h, --help              Display this message.
   -r, --run-args          Arguments added into command \"docker run <here> image\".  (default: \"\")
   -c, --container-args    Arguments added into command \"docker run image <here>\".  (default: \"\")
+  -f, --buildfile         The dockerfile to use within the repository. (default \"build.dockerfile\")
 
 "
 
@@ -34,6 +35,11 @@ case $key in
     shift # past argument
     shift # past value
     ;;
+    -f|--buildfile)
+    BUILDFILE="$2"
+    shift # past argument
+    shift # past value
+    ;;
     *)    # unknown option
     POSITIONAL+=("$1") # save it in an array for later
     shift # past argument
@@ -41,6 +47,10 @@ case $key in
 esac
 done
 set -- "${POSITIONAL[@]}" # restore positional parameters
+
+if [ -z "$BUILDFILE" ]; then
+  BUILDFILE="build.dockerfile"
+fi
 
 
 if [ $# -eq 0 ]; then
@@ -50,5 +60,5 @@ if [ $# -eq 0 ]; then
 fi
 
 TAG="builder"
-docker build -t $TAG -f build.dockerfile $1
+docker build -t $TAG -f $BUILDFILE $1
 docker run -v /var/run/docker.sock:/var/run/docker.sock $RUN_ARGS $TAG $CONTAINER_ARGS
